@@ -1,4 +1,4 @@
-const dbConfig = require('../src/dbConfig')
+const dbConfig = require('../dbConfig')
 const mongojs = require('mongojs')
 
 const userDataController = (request,h) => {
