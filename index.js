@@ -2,7 +2,8 @@ const hapi = require('hapi')
 const routes = require('./src/users/userRoutes')
 
 const server = hapi.server({
-    port: 5000,
+    port: 9000
+    ,
     host: 'localhost'
 })
 
