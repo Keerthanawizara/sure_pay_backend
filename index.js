@@ -12,6 +12,7 @@ const init = async () => {
     console.log( `Server running at ${server.info.uri}`)
 }
 
+
 server.route(routes)
 
 process.on('unhandledRejection',(err) => {
