@@ -8,7 +8,7 @@ const userDataController = (request,h) => {
     const db = mongojs(dbConfig.db)
     const userData = () => {
         return new Promise((resolve,reject) => 
-            db.collection(dbConfig.collection).find().limit(2).toArray((err,docs) => {
+            db.collection(dbConfig.collection).find().limit(10).toArray((err,docs) => {
                 if (err) reject(err)
                 resolve(docs)
             }))
@@ -87,9 +87,11 @@ const propertyRecord = (req,h) => {
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
-                        reject(err)
+                        //console.log(err)
+                       reject(err)
                     }else{
                        resolve({status:true,message:" get one user"})
+                       //console.log(docs)
                     }
                 })); 
 
@@ -101,7 +103,6 @@ const propertyRecord = (req,h) => {
         const db = mongojs(dbConfig.db)
 
         const query = req.query;
-
      const params = {_id: mongojs.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
@@ -122,7 +123,7 @@ const propertyRecord = (req,h) => {
     const db = mongojs(dbConfig.db)
 
     const query = req.query;
-
+   console.log(req.query)
    const params = {_id: mongojs.ObjectId(req.params.id),
               pin:JSON.parse(query.pin)}; 
     return new Promise((resolve,reject) => {
@@ -130,8 +131,10 @@ const propertyRecord = (req,h) => {
             params,
             {$set: query},((err,docs) => {
                 if(err){
-                    reject(err)
+                    //console.log(err)
+                   reject(err)
                 }else{
+                    console.log(docs)
                    resolve({status:true,message:"deleted success"})
                 }
             })); 
