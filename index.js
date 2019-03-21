@@ -1,5 +1,6 @@
 const hapi = require('hapi')
 const routes = require('./src/users/userRoutes')
+const propertyroutes = require('./src/property/propertyRoutes')
 
 const server = hapi.server({
     port: 9000
@@ -14,6 +15,7 @@ const init = async () => {
 
 
 server.route(routes)
+server.route(propertyroutes)
 
 process.on('unhandledRejection',(err) => {
     console.log(err)
