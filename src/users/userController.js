@@ -1,6 +1,10 @@
 const dbConfig = require('../dbConfig')
 const mongojs = require('mongojs')
-const jwt = require('jsonwebtoken');
+const uuid = require('uuid');
+const AuthBearer = require('hapi-auth-bearer-token');
+const uuidv1 = require('uuid/v1');
+
+//
 
 const userDataController = (request,h) => {
     const db = mongojs(dbConfig.db)
@@ -13,17 +17,22 @@ const userDataController = (request,h) => {
     }
     return userData().then(res => res).catch(err => err)
 }
-
-
-//Create token function
-const GenerateToken=(data,callback)=>{
-    console.log(token)
-    console.log(data);return;
-
+// //generate token
+const GenerateToken = () => {
+    return uuidv1(); 
 }
+
+  //insert api
+//   const userTokenCollection = (user_id, token) => {
+//     const db = mongojs(dbConfig.db)
+//         return new Promise((resolve,reject) => {
+//             db.collection(dbConfig.collection).insert({
+//                 user_id : req.params.user_id ,
+//                 Token   : re           
+
   
-//user login 
-const loginUserController =  (request, h) => {
+//user login
+const loginUserController =  async (request, h) => {
     const db = mongojs(dbConfig.db)
            return new Promise((resolve, reject)=> {
                db.collection(dbConfig.collection).find(request.payload).toArray((err, docs) => {
@@ -32,10 +41,9 @@ const loginUserController =  (request, h) => {
               }if(docs.length===0){
                   resolve({status:false,statuscode:400,message:"invalid username or password"})
               }else{
-                  GenerateToken((err,res)=>{
-                     console.log(res)
-                      //resolve({status:true,statuscode:200,message:"user available",data:docs})
-                  })
+                  let token = GenerateToken(); 
+                          
+                  resolve({status:true,statuscode:200,message:"user available",data:token})
               }
             }); 
         })

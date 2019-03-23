@@ -5,5 +5,10 @@ module.exports = {
     MongoClient: MongoClient,
     url: url,
     db: 'users',
-    collection: 'userList'
+    collection: [
+        {
+            user: 'userCollection',
+            property: 'propertyCollection',
+        }
+    ]
 }

@@ -15,7 +15,7 @@ const propertyDataList = (request,h) => {
     return propertyData().then(res => res).catch(err => err)
 }
 
-  // create property details
+  // create property details // 
 
     const propertyDetail = (req,h) => {
         const db = mongojs(dbConfig.db)
