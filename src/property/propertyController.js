@@ -7,7 +7,7 @@ const propertyDataList = (request,h) => {
     const db = mongojs(dbConfig.db)
     const propertyData = () => {
         return new Promise((resolve,reject) => 
-            db.collection(dbConfig.collection).find().limit(10).toArray((err,docs) => {
+            db.collection("propertyCollection").find().limit(10).toArray((err,docs) => {
                 if (err) reject(err)
                 resolve(docs)
             }))
@@ -20,7 +20,7 @@ const propertyDataList = (request,h) => {
     const propertyDetail = (req,h) => {
         const db = mongojs(dbConfig.db)
             return new Promise((resolve,reject) => {
-                db.collection(dbConfig.collection).insert({
+                db.collection("propertyCollection").insert({
                     country: req.payload.country,
                     pin   : req.payload.pin,
                     address: req.payload.address,
@@ -56,7 +56,7 @@ const propertyRecord = (req,h) => {
      const params = {_id: mongojs.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            db.collection(dbConfig.collection).findOne(
+            db.collection("propertyCollection").findOne(
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
@@ -80,7 +80,7 @@ const propertyRecord = (req,h) => {
      const params = {_id: mongojs.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            db.collection(dbConfig.collection).update(
+            db.collection("propertyCollection").update(
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
@@ -102,7 +102,7 @@ const propertyRecord = (req,h) => {
    const params = {_id: mongojs.ObjectId(req.params.id),
               pin:JSON.parse(query.pin)}; 
     return new Promise((resolve,reject) => {
-        db.collection(dbConfig.collection).remove(
+        db.collection("propertyCollection").remove(
             params,
             {$set: query},((err,docs) => {
                 if(err){

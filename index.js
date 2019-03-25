@@ -5,7 +5,7 @@ const AuthBearer = require('hapi-auth-bearer-token');
 
 
 const server = hapi.server({
-    port: '5500'
+    port: '5324'
     ,
     host: 'localhost'
 })
@@ -15,19 +15,21 @@ const init = async () => {
     await server.register(AuthBearer);
  
      server.auth.strategy('simple', 'bearer-access-token', {
-    allowQueryToken: true,              // optional, false by default
+        allowMultipleHeaders: false,              // optional, false by default
     validate: async (request, token, h) => {
 
+        request.headers.set(Authorization, `Bearer ${token}`);
         // here is where you validate your token
         // comparing with token from your database for example
-        const isValid = token === '1234';
+        const isValid = token === '83ca4f00-4ee2-11e9-8607-bde597260912';
 
         const credentials = { token };
         const artifacts = { test: 'info' };
 
-        return { isValid, credentials, artifacts };
+        return { isValid, credentials, artifacts, request};
     }
-});  // 
+    
+}); 
 
     await server.start()
     console.log( `Server running at ${server.info.uri}`)

@@ -8,7 +8,7 @@ module.exports = {
     collection: [
         {
             user: 'userCollection',
-            property: 'propertyCollection',
+            property: 'propertyCollection'
         }
     ]
 }

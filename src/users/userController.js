@@ -34,16 +34,19 @@ const GenerateToken = () => {
 //user login
 const loginUserController =  async (request, h) => {
     const db = mongojs(dbConfig.db)
+    //console.log(dbConfig.db)
            return new Promise((resolve, reject)=> {
-               db.collection(dbConfig.collection).find(request.payload).toArray((err, docs) => {
+               db.collection("userCollection").find(request.payload).toArray((err, docs) => {
+            
               if(err){
+
               return reject(err)
               }if(docs.length===0){
                   resolve({status:false,statuscode:400,message:"invalid username or password"})
               }else{
                   let token = GenerateToken(); 
                           
-                  resolve({status:true,statuscode:200,message:"user available",data:token})
+                  resolve({status:true,statuscode:200,message:"user available",data:token,expiresIn: 120})
               }
             }); 
         })
