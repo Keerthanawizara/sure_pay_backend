@@ -1,5 +1,16 @@
-const Controller = require('./userController')
+const userCtrl = require('./userController')
+
 module.exports = [
-    {method: 'GET',path: '/',handler: Controller.userDataController},
-    {method: 'POST',path: '/loginUser', handler: Controller.loginUserController},
-];
+    {
+        method: 'POST',
+        path: '/',
+        config: { auth: false },
+        handler: userCtrl.userAuthController
+    },
+    {
+        method: 'GET',
+        path: '/userList',
+        handler: userCtrl.userDataController
+    }
+
+]

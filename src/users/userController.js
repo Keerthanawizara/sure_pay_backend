@@ -1,59 +1,30 @@
-const dbConfig = require('../dbConfig')
-const mongojs = require('mongojs')
-const uuid = require('uuid');
-const AuthBearer = require('hapi-auth-bearer-token');
-const uuidv1 = require('uuid/v1');
+const userDataModel = require('./userModel')
+const userAuthentication = require('../common/authenticator')
+const uuid = require('uuid/v1')
 
-//
-
-const userDataController = (request,h) => {
-    const db = mongojs(dbConfig.db)
-    const userData = () => {
-        return new Promise((resolve,reject) => 
-            db.collection(dbConfig.collection).find().toArray((err,docs) => {
-                if (err) reject(err)
-                resolve(docs)
-            }))
+const userAuthController = async (request) => {
+    const userCredentials = request.payload
+    try {
+        if (userCredentials.username && userCredentials.password) {
+            const userAuth = new userDataModel(userCredentials.username, userCredentials.password)
+            const user = await userAuth.findUser()
+            if (user[0]['_id']) {
+                const userAuthToken = new userAuthentication()
+                userAuthToken.setToken(uuid())
+                return { login: "success", token: userAuthToken.getToken() }
+            } else {
+                return { login: "failure", status: "user not available" }
+            }
+        } else {
+            return { login: "failure" }
+        }
+    } catch (e) {
+        return e
     }
-    return userData().then(res => res).catch(err => err)
-}
-// //generate token
-const GenerateToken = () => {
-    return uuidv1(); 
 }
 
-  //insert api
-//   const userTokenCollection = (user_id, token) => {
-//     const db = mongojs(dbConfig.db)
-//         return new Promise((resolve,reject) => {
-//             db.collection(dbConfig.collection).insert({
-//                 user_id : req.params.user_id ,
-//                 Token   : re           
+const userDataController = async (request) => {
+    return "Hello"
+} 
 
-  
-//user login
-const loginUserController =  async (request, h) => {
-    const db = mongojs(dbConfig.db)
-    //console.log(dbConfig.db)
-           return new Promise((resolve, reject)=> {
-               db.collection("userCollection").find(request.payload).toArray((err, docs) => {
-            
-              if(err){
-
-              return reject(err)
-              }if(docs.length===0){
-                  resolve({status:false,statuscode:400,message:"invalid username or password"})
-              }else{
-                  let token = GenerateToken(); 
-                          
-                  resolve({status:true,statuscode:200,message:"user available",data:token,expiresIn: 120})
-              }
-            }); 
-        })
-
-    };
-
-module.exports = {
-     userDataController,
-     loginUserController
-}
+module.exports = { userAuthController, userDataController }
