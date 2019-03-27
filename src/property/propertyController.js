@@ -1,26 +1,12 @@
-const dbConfig = require('../dbConfig')
-const mongojs = require('mongojs')
+//const dbConfig = require('../dbConfig')
+const propertyCollection = require('./propertyModel');
+const mongoose = require('mongoose');
 
-// property table List Page
+//create property detail API
 
-const propertyDataList = (request,h) => {
-    const db = mongojs(dbConfig.db)
-    const propertyData = () => {
-        return new Promise((resolve,reject) => 
-            db.collection("propertyCollection").find().limit(10).toArray((err,docs) => {
-                if (err) reject(err)
-                resolve(docs)
-            }))
-    }
-    return propertyData().then(res => res).catch(err => err)
-}
-
-  // create property details // 
-
-    const propertyDetail = (req,h) => {
-        const db = mongojs(dbConfig.db)
-            return new Promise((resolve,reject) => {
-                db.collection("propertyCollection").insert({
+const propertyDetail = (req,h) => {
+ return new Promise((resolve,reject) => {
+                'property'.create({
                     country: req.payload.country,
                     pin   : req.payload.pin,
                     address: req.payload.address,
@@ -42,21 +28,38 @@ const propertyDataList = (request,h) => {
                 },  
                 ((err,docs) => {
                     if (err) {
-                   return reject(err)
+                console.log(err)  
+                //return reject(err)
                      }else resolve(docs)
                 }))
             })
         }
-//propertyDetail/{pin}
-const propertyRecord = (req,h) => {
-        const db = mongojs(dbConfig.db)
 
+
+// // property table List Page
+
+const propertyDataList = (request,h) => {
+    const propertyData = () => {
+        return new Promise((resolve,reject) => 
+            property.find().limit(10).toArray((err,docs) => {
+                if (err) 
+                //reject(err)
+                console.log(err)
+                resolve(docs)
+            }))
+    }
+    return propertyData().then(res => res).catch(err => err)
+}
+
+
+ //propertyDetail/{pin}
+const propertyRecord = (req,h) => {
         const query = req.query;
 
-     const params = {_id: mongojs.ObjectId(req.params.id),
+     const params = {_id: mongoose.Types.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            db.collection("propertyCollection").findOne(
+            property.findOne(
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
@@ -71,20 +74,19 @@ const propertyRecord = (req,h) => {
         })
     }
     
-    //update property details
+//     //update property details
 
     const propertyRecordUpdate = (req,h) => {
-        const db = mongojs(dbConfig.db)
-
         const query = req.query;
-     const params = {_id: mongojs.ObjectId(req.params.id),
+     const params = {_id: mongoose.Types.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            db.collection("propertyCollection").update(
+            property.update(
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
-                        reject(err)
+                        console.log(err)
+                        //reject(err)
                     }else{
                        resolve({status:true,message:"update success"})
                     }
@@ -92,17 +94,16 @@ const propertyRecord = (req,h) => {
 
         })
     }
-// delete property details
+// // delete property details
 
   const propertyRecordDelete = (req,h) => {
-    const db = mongojs(dbConfig.db)
-
+    
     const query = req.query;
    console.log(req.query)
-   const params = {_id: mongojs.ObjectId(req.params.id),
+   const params = {_id: mongoose.Types.ObjectId(req.params.id),
               pin:JSON.parse(query.pin)}; 
     return new Promise((resolve,reject) => {
-        db.collection("propertyCollection").remove(
+        property.delete(
             params,
             {$set: query},((err,docs) => {
                 if(err){
@@ -123,7 +124,7 @@ const propertyRecord = (req,h) => {
 module.exports = {
      propertyDataList,
      propertyDetail,
-     propertyRecord,
+      propertyRecord,
      propertyRecordUpdate,
      propertyRecordDelete
 
