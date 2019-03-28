@@ -2,6 +2,7 @@ const hapi = require('hapi')
 //const dbConfig = require('./dbConfig')
 //const routes = require('./src/users/userRoutes')
 const propertyroutes = require('./src/property/propertyRoutes')
+const paymentroutes = require('./src/payment/paymentRoutes')
 //const AuthBearer = require('hapi-auth-bearer-token');
 
 //const userAuthentication = require('./src/common/authenticator')
@@ -16,7 +17,7 @@ const propertyroutes = require('./src/property/propertyRoutes')
 // }
 
 const server = hapi.server({
-    port: 5000,
+    port: 5500,
     host: 'localhost'
 })
 
@@ -34,6 +35,7 @@ const init = async () => {
 
 //server.route(routes)
 server.route(propertyroutes)
+server.route(paymentroutes)
 
 process.on('unhandledRejection',(err) => {
     console.log(err)

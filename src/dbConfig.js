@@ -12,15 +12,17 @@
 //         }
 //     ]
 // }
-const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/users",{useNewUrlParser: true}, err => {
-    if(!err){
-        console.log('mongodb connection success')
-    }else{
-        console.log('error:'+ err)
-    }
-})
+// const mongoose = require('mongoose');
+// //Set up default mongoose connection
+// var mongoDB = 'mongodb://127.0.0.1/users';
+// mongoose.connect(mongoDB, { useNewUrlParser: true });
+// //Get the default connection
+// var db = mongoose.connection;
 
-module.exports = mongoose
+// //Bind connection to error event (to get notification of connection errors)
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// db.once('success', console.success.bind(console, 'Mongo connection Success:'));
+
+//module.exports = db;
 
 
