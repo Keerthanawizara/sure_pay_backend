@@ -3,6 +3,7 @@ const hapi = require('hapi')
 //const routes = require('./src/users/userRoutes')
 const propertyroutes = require('./src/property/propertyRoutes')
 const paymentroutes = require('./src/payment/paymentRoutes')
+//const propertyDataFile = require('./src/propertyDataFile')
 //const AuthBearer = require('hapi-auth-bearer-token');
 
 //const userAuthentication = require('./src/common/authenticator')
@@ -52,3 +53,4 @@ mongoose.connect("mongodb://localhost:27017/users",{useNewUrlParser: true}, err 
         console.log('error:'+ err)
     }
 })
+

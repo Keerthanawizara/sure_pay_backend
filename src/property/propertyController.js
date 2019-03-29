@@ -59,7 +59,7 @@ const propertyRecord = (req,h) => {
      const params = {_id: mongoose.Types.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            property.findOne(
+            property.findByIdAndUpdate(
                 params,
                 {$set: query},((err,docs) => {
                     if(err){
@@ -103,7 +103,7 @@ const propertyRecord = (req,h) => {
    const params = {_id: mongoose.Types.ObjectId(req.params.id),
               pin:JSON.parse(query.pin)}; 
     return new Promise((resolve,reject) => {
-        property.delete(
+        property.remove(
             params,
             {$set: query},((err,docs) => {
                 if(err){
@@ -124,7 +124,7 @@ const propertyRecord = (req,h) => {
 module.exports = {
      propertyDataList,
      propertyDetail,
-      propertyRecord,
+     propertyRecord,
      propertyRecordUpdate,
      propertyRecordDelete
 

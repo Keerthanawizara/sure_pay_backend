@@ -58,15 +58,15 @@ const paymentDataList = (request,h) => {
     //     //update property details
 
     const paymentRecordUpdate = (req,h) => {
-        //const query = req.query;
-        //console.log(query)
-     const params = {_id: mongoose.Types.ObjectId('5c9c991a785c6d37d4701316'),
-                  pin:JSON.parse('899970')};
+       const query = req.query;
+        console.log(query)
+     const params = {_id: mongoose.Types.ObjectId(req.params.id),
+                  pin:JSON.parse(query.pin)};
                   console.log(params) 
         return new Promise((resolve,reject) => {
-            paymentCollection.updateMany({},
-        
-                { $set: { payment: '70000' } }),((err,docs) => {
+            paymentCollection.update(
+                params,
+                { $set: query },((err,docs) => {
                     if(err){
                        console.log(err)
                         //reject(err)
@@ -74,72 +74,35 @@ const paymentDataList = (request,h) => {
                       resolve(docs)
                        //({status:true,message:"update success"})
                     }
-                }); 
+                })); 
 
         })
-    }
+     }
     // // delete property details
 
-  const paymentRecordDelete = (req,h) => {
-    //console.log(req.query)
-    const query = req.query;
-   console.log(req.query)
-   const params = {_id: mongoose.Types.ObjectId(req.params.id),
-              pin:JSON.parse(query.pin)}; 
-              console.log(params)
-    return new Promise((resolve,reject) => {
-        paymentCollection.deleteMany(
-            params,
-            {$set: query},((err,docs) => {
-                if(err){
+  
+    const paymentRecordDelete = (req,h) => {
+        const query = req.query;
+         console.log(query)
+      const params = {_id: mongoose.Types.ObjectId(req.params.id),
+                   pin:JSON.parse(query.pin)};
+                   console.log(params) 
+         return new Promise((resolve,reject) => {
+             paymentCollection.Remove(
+                 params,
+                 { $set: query },((err,docs) => {
+                     if(err){
                     console.log(err)
-                   //reject(err)
-                }else{
-                    console.log(docs)
-                   //resolve({status:true,message:"deleted success"})
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            })); 
-
-    })
-  }
-
-    
-
-
+                        // reject(err)
+                     }else{
+                       resolve(docs)
+                       // ({status:true,message:"Deleted success"})
+                     }
+                    })); 
+ 
+         })
+        }
+        
 
         module.exports = {
             paymentDetail,
