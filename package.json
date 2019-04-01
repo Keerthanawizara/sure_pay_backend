@@ -19,6 +19,7 @@
     "mongodb": "^3.1.13",
     "mongojs": "^2.6.0",
     "mongoose": "^5.4.20",
+    "mongoose-paginate": "^5.0.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

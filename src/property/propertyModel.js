@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 //get the Schema class
 const Schema = mongoose.Schema;
 
@@ -29,5 +30,5 @@ const PropertySchema = new Schema({
     legal_description : String,
     google_map_view : String
 });
-
-module.exports = mongoose.model('property', PropertySchema);
+PropertySchema.plugin(mongoosePaginate);
+module.exports = mongoose.model('propertycollections', PropertySchema);

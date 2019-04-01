@@ -1,5 +1,5 @@
 const hapi = require('hapi')
-//const dbConfig = require('./dbConfig')
+require('./src/dbConfig').dbconfig();
 //const routes = require('./src/users/userRoutes')
 const propertyroutes = require('./src/property/propertyRoutes')
 const paymentroutes = require('./src/payment/paymentRoutes')
@@ -45,12 +45,5 @@ process.on('unhandledRejection',(err) => {
 
 init()
 
-const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/users",{useNewUrlParser: true}, err => {
-    if(!err){
-        console.log('mongodb connection success')
-    }else{
-        console.log('error:'+ err)
-    }
-})
+
 

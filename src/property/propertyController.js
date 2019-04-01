@@ -1,4 +1,3 @@
-//const dbConfig = require('../dbConfig')
 const propertyCollection = require('./propertyModel');
 const mongoose = require('mongoose');
 
@@ -6,30 +5,11 @@ const mongoose = require('mongoose');
 
 const propertyDetail = (req,h) => {
  return new Promise((resolve,reject) => {
-                'property'.create({
-                    country: req.payload.country,
-                    pin   : req.payload.pin,
-                    address: req.payload.address,
-                    city   : req.payload.city,
-                    state  : req.payload.state,
-                    zip    : req.payload.zip,
-                    township : req.payload.township,
-                    class_code : req.payload.class_code,
-                    assessed_value : req.payload.assessed_value,
-                    market_value : req.payload.market_value,
-                    taxes_per_year : req.payload.taxes_per_year,
-                    PREEQEXM : req.payload.PREEQEXM,
-                    home_owners: req.payload.home_owners,
-                    senior_exemption : req.payload.senior_exemption,
-                    senior_freeze : req.payload.senior_freeze,
-                    total_acres: req.payload.total_acres,
-                    legal_description: req.payload.legal_description,
-                    google_map_view: req.payload.google_map_view
-                },  
+    propertyCollection.create(req.payload,  
                 ((err,docs) => {
                     if (err) {
-                console.log(err)  
-                //return reject(err)
+               // console.log(err)  
+                return reject(err)
                      }else resolve(docs)
                 }))
             })
@@ -41,11 +21,13 @@ const propertyDetail = (req,h) => {
 const propertyDataList = (request,h) => {
     const propertyData = () => {
         return new Promise((resolve,reject) => 
-            property.find().limit(10).toArray((err,docs) => {
-                if (err) 
-                //reject(err)
-                console.log(err)
-                resolve(docs)
+            propertyCollection.paginate({}, { page: 1, limit: 3 },(err,docs) => {
+                if (err) {
+                reject(err)
+               // console.log(err)
+                 }else{
+                   resolve(docs)
+                 }
             }))
     }
     return propertyData().then(res => res).catch(err => err)
@@ -59,9 +41,9 @@ const propertyRecord = (req,h) => {
      const params = {_id: mongoose.Types.ObjectId(req.params.id),
                   pin:JSON.parse(query.pin)}; 
         return new Promise((resolve,reject) => {
-            property.findByIdAndUpdate(
+            propertyCollection.findOne(
                 params,
-                {$set: query},((err,docs) => {
+                  ((err,docs) => {
                     if(err){
                         //console.log(err)
                        reject(err)
@@ -78,18 +60,21 @@ const propertyRecord = (req,h) => {
 
     const propertyRecordUpdate = (req,h) => {
         const query = req.query;
-     const params = {_id: mongoose.Types.ObjectId(req.params.id),
-                  pin:JSON.parse(query.pin)}; 
+        const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};
+        // console.log(params)
+
+     const update_data={state:query.state}
         return new Promise((resolve,reject) => {
-            property.update(
+            propertyCollection.updateOne(
                 params,
-                {$set: query},((err,docs) => {
-                    if(err){
-                        console.log(err)
-                        //reject(err)
-                    }else{
-                       resolve({status:true,message:"update success"})
-                    }
+                { $set: update_data },((err,docs) => {
+                    if(!err){
+                        if(docs.count>0){
+                            resolve({status:true,message:"update success"})
+                        }else{
+                            resolve({status:false,message:"invalid pin or id"})
+                        }
+                     }
                 })); 
 
         })
@@ -97,27 +82,28 @@ const propertyRecord = (req,h) => {
 // // delete property details
 
   const propertyRecordDelete = (req,h) => {
-    
     const query = req.query;
-   console.log(req.query)
-   const params = {_id: mongoose.Types.ObjectId(req.params.id),
-              pin:JSON.parse(query.pin)}; 
-    return new Promise((resolve,reject) => {
-        property.remove(
-            params,
-            {$set: query},((err,docs) => {
-                if(err){
-                    //console.log(err)
-                   reject(err)
-                }else{
-                    console.log(docs)
-                   resolve({status:true,message:"deleted success"})
-                }
-            })); 
-
-    })
+    console.log(req.query)
+  const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};
+  console.log(params)
+     return new Promise((resolve) => {
+         propertyCollection.deleteOne(
+             params,((err,docs) => {
+                 if(!err){
+                    if(docs.count>0){
+                        //console.log(err)
+                        //resolve(err)
+                       resolve({status:true,message:"delete success"})
+                    }else{
+                        //resolve(docs)
+                        resolve({status:false,message:"invalid pin or id"})
+                    }
+                 }
+                })); 
+     })
   }
 
+  
 
 
 
