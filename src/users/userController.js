@@ -1,88 +1,46 @@
-// const userDataModel = require('./userModel')
-// const userAuthentication = require('../common/authenticator')
-// const uuid = require('uuid/v1')
-
-// const userAuthController = async (request) => {
-//     const userCredentials = request.payload
-//     try {
-//         if (userCredentials.username && userCredentials.password) {
-//             const userAuth = new userDataModel(userCredentials.username, userCredentials.password)
-//             const user = await userAuth.findUser()
-//             if (user[0]['_id']) {
-//                 const userAuthToken = new userAuthentication()
-//                 userAuthToken.setToken(uuid())
-//                 return { login: "success", token: userAuthToken.getToken() }
-//             } else {
-//                 return { login: "failure", status: "user not available" }
-//             }
-//         } else {
-//             return { login: "failure" }
-//         }
-//     } catch (e) {
-//         return e
-//     }
-// }
-
-// const userDataController = async (request) => {
-//     return "Hello"
-// } 
-
-// module.exports = { userAuthController, userDataController }
-
-const userCollection = require('./userModel');
+const userCollection = require('./userModel')
+const userAuthentication = require('../common/authenticator')
+const uuid = require('uuid/v1')
 const Joi = require('joi');
-//var promise = require('es6-promise').Promise;
 
+const userAuthController = (req) => {
+    const userCredentials = req.payload
+    return new Promise((resolve, reject)=> {
+        userCollection.find(userCredentials).toArray((err,docs) => {
+            if(user[0]['_id']) {
+                const userAuthToken = new userAuthentication()
+                userAuthToken.setToken(uuid())
+                return resolve ({ login: "success", token: userAuthToken.getToken() })
+            }else {
+             return resolve ({ login: "failure", status: "user not available" })                
+            }
+        })
+})
+}
+
+//joi validation 
 const createUser = (req,h) => {
-    let data = req.payload
+     var data = req.payload
     const schema = Joi.object().keys({
         username: Joi.string().min(3).max(20).required(),
         password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/) 
      }).with('username', 'password');
-    //var validate = ()=> {
-            Joi.validate(data, schema, (err) =>{
-                console.log(data)
-                console.log(schema)
-                if (err) {
-                return (err)
-                 } else {
-                  return new promise((resolve, reject) => {
-                    userCollection.create({
-                        username   : req.payload.username,
-                        password : req.payload.password,        
-                    },  
-                    ((err,docs) => {
-                        if (err) {  
-                         console.log(err)
-                          reject(err)
-                         }else 
-                         resolve(docs)
-                        console.log|(docs)
-                  
-                  }))
-                
-                })
-            };
+        return new Promise((resolve, reject) => {
+            userCollection.create({
+                username  : req.payload.username,
+                password : req.payload.password,        
+            },  
+            Joi.validate(data, schema, (err,docs)=> {
+                if (err) reject(err);
+                else resolve(docs);
+            }));
         });
-    // }
 }
-// const userCollection = require('./userModel');
-// const createUser = (req,h) => {
-//     return new Promise((resolve,reject) => {
-//                    userCollection.create({
-//                        username  : req.payload.username,
-//                        password : req.payload.password,        
-//                    },  
-//                    ((err,docs) => {
-//                        if (err) {
-//                    //console.log(err)  
-//                   return reject(err)
-//                         }else resolve(docs)
-//                    }))
-//                })
-//            }
+
 
 
 module.exports = {
-    createUser
+    createUser,
+    userAuthController
+    
 }

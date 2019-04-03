@@ -21,7 +21,7 @@
 
 // module.exports = userDataModel
 const mongoose = require('mongoose');
-var Joi = require('joi');
+
 //get the Schema class
 const Schema = mongoose.Schema;
 
@@ -35,11 +35,5 @@ const userSchema = new Schema({
           type : String
       }
 });
-// userSchema.methods.joiValidate = function(obj) {
-// 	var schema = {
-// 		username: Joi.types.String().min(6).max(30).required(),
-// 		password: Joi.types.String().min(8).max(30).regex(/[a-zA-Z0-9]{3,30}/).required()
-// 	}
-// 	return Joi.validate(obj, schema);
-// }
+
 module.exports = mongoose.model('userCollections', userSchema);
