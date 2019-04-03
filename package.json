@@ -12,6 +12,7 @@
   "dependencies": {
     "csv": "^5.1.1",
     "csv-parser": "^2.2.0",
+    "es6-promise": "^4.2.6",
     "fs": "0.0.1-security",
     "hapi": "^18.1.0",
     "hapi-auth-bearer-token": "^6.1.1",

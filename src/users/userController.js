@@ -31,6 +31,7 @@
 
 const userCollection = require('./userModel');
 const Joi = require('joi');
+//var promise = require('es6-promise').Promise;
 
 const createUser = (req,h) => {
     let data = req.payload
@@ -38,14 +39,14 @@ const createUser = (req,h) => {
         username: Joi.string().min(3).max(20).required(),
         password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/) 
      }).with('username', 'password');
-     //validate: ()=> {
+    //var validate = ()=> {
             Joi.validate(data, schema, (err) =>{
                 console.log(data)
                 console.log(schema)
                 if (err) {
-                throw (err)
+                return (err)
                  } else {
-                    return new Promises((resolve, reject) => {
+                  return new promise((resolve, reject) => {
                     userCollection.create({
                         username   : req.payload.username,
                         password : req.payload.password,        
@@ -63,7 +64,7 @@ const createUser = (req,h) => {
                 })
             };
         });
-    //}
+    // }
 }
 // const userCollection = require('./userModel');
 // const createUser = (req,h) => {
