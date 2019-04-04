@@ -6,6 +6,7 @@ class userAuthentication {
             return userAuthentication.instance
         }
         this._userAuthToken = userAuthToken
+        console.log(userAuthToken)
         userAuthentication.instance = this
         userAuthentication.isTrue = true
     }

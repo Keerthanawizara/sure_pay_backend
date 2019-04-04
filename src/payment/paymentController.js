@@ -1,22 +1,27 @@
 const paymentCollection = require('./paymentModel');
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
-//create payment detail API
+// server side Data validation initialize
 
+const schema = Joi.object().keys({
+    pin: Joi.string().required(),
+   payment: Joi.string().required() 
+}).with('pin', 'payment');
+
+//create api with joi validation 
 const paymentDetail = (req,h) => {
- return new Promise((resolve,reject) => {
-                paymentCollection.create({
-                    pin   : req.payload.pin,
-                    payment : req.payload.payment,        
-                },  
-                ((err,docs) => {
-                    if (err) {
-                console.log(err)  
-              // return reject(err)
-                     }else resolve(docs)
-                }))
-            })
-        }
+    var data = req.payload
+       return new Promise((resolve, reject) => {
+           paymentCollection.create(req.payload,
+           Joi.validate(data, schema, (err,docs)=> {
+               if (err) reject(err);
+               else resolve(docs);
+           }));
+       });
+}
+
+        
 // payment table List Page
 
 const paymentDataList = (request,h) => {
@@ -37,8 +42,6 @@ const paymentDataList = (request,h) => {
         const query = req.query;
         console.log(req.query)
         const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};  
-            console.log(req.params.id)
-            console.log(query.pin)
             return new Promise((resolve,reject) => {
                 paymentCollection.findOne(
                     params,
@@ -61,9 +64,7 @@ const paymentDataList = (request,h) => {
         
         const query = req.query;
         const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};
-        // console.log(params)
-
-     const update_data={payment:query.payment}
+        const update_data={payment:query.payment}
         return new Promise((resolve,reject) => {
             paymentCollection.updateOne(
                 params,
@@ -84,19 +85,14 @@ const paymentDataList = (request,h) => {
   
     const paymentRecordDelete = (req,h) => {
         const query = req.query;
-        console.log(req.query)
-      const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};
-      console.log(params)
+        const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};
          return new Promise((resolve) => {
              paymentCollection.deleteOne(
                  params,((err,docs) => {
                      if(!err){
                         if(docs.count>0){
-                            //console.log(err)
-                            //resolve(err)
                            resolve({status:true,message:"delete success"})
                         }else{
-                            //resolve(docs)
                             resolve({status:false,message:"invalid pin or id"})
                         }
                      }

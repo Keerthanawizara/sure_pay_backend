@@ -33,7 +33,6 @@ const init = async () => {
     
 }
 
-//server.route(routes)
 server.route(propertyroutes)
 server.route(paymentroutes)
 server.route(userroutes)
