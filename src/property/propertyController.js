@@ -48,7 +48,7 @@ const propertyDetail = (req,h) => {
 const propertyDataList = (request,h) => {
     const propertyData = () => {
         return new Promise((resolve,reject) => 
-            propertyCollection.paginate({}, { page: 1, limit: 3 },(err,docs) => {
+            propertyCollection.paginate({}, { offset: 0, limit: 10},(err,docs) => {
                 if (err) {
                 reject(err)
                // console.log(err)
@@ -64,11 +64,9 @@ const propertyDataList = (request,h) => {
  //propertyDetail/{pin}
 const propertyRecord = (req,h) => {
         const query = req.query;
-
-     const params = {_id: mongoose.Types.ObjectId(req.params.id),
-                  pin:JSON.parse(query.pin)}; 
+     const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin}
         return new Promise((resolve,reject) => {
-            propertyCollection.findOne(
+            propertyCollection.findById(
                 params,
                   ((err,docs) => {
                     if(err){
@@ -96,12 +94,12 @@ const propertyRecord = (req,h) => {
                 params,
                 { $set: update_data },((err,docs) => {
                     if(!err){
-                        if(docs.count>0){
+                       // if(docs.count>0){
                             resolve({status:true,message:"update success"})
                         }else{
                             resolve({status:false,message:"invalid pin or id"})
                         }
-                     }
+                     //}
                 })); 
 
         })
@@ -117,7 +115,7 @@ const propertyRecord = (req,h) => {
          propertyCollection.deleteOne(
              params,((err,docs) => {
                  if(!err){
-                    if(docs.count>0){
+                    //if(docs.count>0){
                         //console.log(err)
                         //resolve(err)
                        resolve({status:true,message:"delete success"})
@@ -125,7 +123,7 @@ const propertyRecord = (req,h) => {
                         //resolve(docs)
                         resolve({status:false,message:"invalid pin or id"})
                     }
-                 }
+                 //}
                 })); 
      })
   }

@@ -17,7 +17,7 @@ const authTokenValidator = async (request, token, h) => {
 }
 
 const server = hapi.server({
-    port: 3000,
+    port: 5000,
     host: 'localhost'
 })
 

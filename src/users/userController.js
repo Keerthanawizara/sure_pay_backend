@@ -7,7 +7,7 @@ const Joi = require('joi');
 //server side data validation initialize
 
 const schema = Joi.object().keys({
-    username: Joi.string().min(3).max(20).required(),
+    username: Joi.string().email({ minDomainAtoms: 2 }).required(),
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/) 
  }).with('username', 'password');
 
@@ -28,20 +28,20 @@ const createUser = (req,h) => {
 
 const userAuthController = (req) => {
     console.log("hii")
-//     const userCredentials = req.payload
-//     console.log(userCredentials)
-//     return new Promise((resolve, reject)=> {
-//         userCollection.find(userCredentials).toArray((err,docs) => {
-//             if(user[0]['_id']) {
-//                 const userAuthToken = new userAuthentication()
-//                 console.log(userAuthToken)
-//                 userAuthToken.setToken(uuid())
-//                 return resolve ({ login: "success", token: userAuthToken.getToken() })
-//             }else {
-//              return resolve ({ login: "failure", status: "user not available" })                
-//             }
-//         })
-// })
+    const userCredentials = req.payload
+    console.log(userCredentials)
+    return new Promise((resolve, reject)=> {
+        userCollection.find(userCredentials).toArray((err,docs) => {
+            if(user[0]['_id']) {
+                const userAuthToken = new userAuthentication()
+                console.log(userAuthToken)
+                userAuthToken.setToken(uuid())
+                return resolve ({ login: "success", token: userAuthToken.getToken() })
+            }else {
+             return resolve ({ login: "failure", status: "user not available" })                
+            }
+        })
+})
 }
 
 

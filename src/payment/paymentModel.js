@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 var mongoosePaginate = require('mongoose-paginate');
 //get the Schema class
 const Schema = mongoose.Schema;
