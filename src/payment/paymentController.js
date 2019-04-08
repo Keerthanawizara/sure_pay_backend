@@ -29,7 +29,7 @@ const paymentDataList = (request,h) => {
             paymentCollection.paginate({},{offset:0, limit:10},(err,docs) => {
                 if (err) {
                reject(err)
-               console.log(err)
+               //console.log(err)
                  }else{
                    resolve(docs)
                  }

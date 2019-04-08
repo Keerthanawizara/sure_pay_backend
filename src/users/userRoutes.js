@@ -8,5 +8,10 @@ module.exports = [
       method: 'POST',
       path: '/loginUser',
       handler: Controller.userAuthController
+     },
+     {
+         method:'GET',
+         path: '/GetUserList',
+         handler:Controller.GetUserList
      }
 ];

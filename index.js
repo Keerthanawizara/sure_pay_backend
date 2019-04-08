@@ -10,24 +10,24 @@ const uuid = require('uuid/v1')
 
 const authTokenValidator = async (request, token, h) => {
     const userAuthToken = new userAuthentication()
-    const isValid = token === userAuthToken.getToken()
+    const isValid = token === "1234"
     const credentials = { token }
     const artifacts = { test: 'info' }
     return { isValid, credentials, artifacts };
 }
 
 const server = hapi.server({
-    port: 5000,
+    port: 7000,
     host: 'localhost'
 })
 
 const init = async () => {
     await server.register(AuthBearer)
     server.auth.strategy('simple', 'bearer-access-token', {
-        allowQueryToken: true,
+        allowMultipleHeaders: true,
         validate: authTokenValidator
     })
-    server.auth.default('simple')
+   server.auth.default('simple')
     await server.start()
     console.log( `Server running at ${server.info.uri}`)
     
