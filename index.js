@@ -4,8 +4,9 @@ const userroutes = require('./src/users/userRoutes')
 const propertyroutes = require('./src/property/propertyRoutes')
 const paymentroutes = require('./src/payment/paymentRoutes')
 const AuthBearer = require('hapi-auth-bearer-token');
-
+const mailroutes = require('./src/Email/emailRoutes.js')
 const userAuthentication = require('./src/common/authenticator')
+
 const uuid = require('uuid/v1')
 
 const authTokenValidator = async (request, token, h) => {
@@ -36,6 +37,7 @@ const init = async () => {
 server.route(propertyroutes)
 server.route(paymentroutes)
 server.route(userroutes)
+server.route(mailroutes)
 
 process.on('unhandledRejection',(err) => {
     console.log(err)

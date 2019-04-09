@@ -13,7 +13,7 @@
 //     ]
 // }
 
-
+var nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 const dbconfig=()=>{
     mongoose.connect("mongodb://localhost:27017/users",{useNewUrlParser: true}, err => {
@@ -22,8 +22,13 @@ const dbconfig=()=>{
     }else{
         console.log('error:'+ err)
     }
-})
+});
 }
+
+
+
 module.exports={
     dbconfig
 }
+
+
