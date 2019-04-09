@@ -73,7 +73,7 @@ const userAuthController = async (request) => {
     console.log(userCredentials)
         if (userCredentials.username && userCredentials.password) {
             return new Promise((resolve, reject)=> {
-                userCollection.find(request.payload),((err,docs) => {
+                userCollection.find(userCredentials.username, userCredentials.password),((err,docs) => {
             if (user[0]['_id']) {
                 const userAuthToken = new userAuthentication()
                 userAuthToken.setToken(uuid())
