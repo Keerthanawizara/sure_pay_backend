@@ -8,7 +8,7 @@ const Joi = require('joi');
 
 const schema = Joi.object().keys({
     username: Joi.string().email({ minDomainAtoms: 2 }).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/) 
+    password: Joi.string().regex(/^[a-zA-Z0-9]{8,10}$/) 
  }).with('username', 'password');
 
 
