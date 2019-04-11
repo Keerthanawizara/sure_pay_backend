@@ -1,5 +1,5 @@
 const Controller = require('./paymentController')
-console
+
 module.exports = [
     {method: 'GET',path: '/paymentDataList',handler: Controller.paymentDataList},
     {method: 'POST', path: '/paymentDetail', handler: Controller.paymentDetail},

@@ -1,7 +1,7 @@
-const Controller = require('./emailController')
+const Emailctrl = require('./emailController')
 
-module.exports = 
+module.exports = [
     {method: 'POST',
      path: '/sendEmail', 
-     handler: Controller.SendMail
-    }
+     handler: Emailctrl
+    }]

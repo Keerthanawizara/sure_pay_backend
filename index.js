@@ -1,20 +1,14 @@
 const hapi = require('hapi')
-// var nodemailer = require('nodemailer');
-
-// var transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//         user: "keerthirajme@gmail.com",
-//         pass: "rajendran5"
-//     }
-// });
-
 require('./src/dbConfig').dbconfig();
 //const userroutes = require('./src/users/userRoutes')
 const propertyroutes = require('./src/property/propertyRoutes')
 const paymentroutes = require('./src/payment/paymentRoutes')
+const countyroutes = require('./src/County/countyRoutes')
+
 //const AuthBearer = require('hapi-auth-bearer-token');
  const mailroutes = require('./src/Email/emailRoutes')
+ //console.log(countyroutes)
+
 //const userAuthentication = require('./src/common/authenticator')
 
 // const uuid = require('uuid/v1')
@@ -28,7 +22,7 @@ const paymentroutes = require('./src/payment/paymentRoutes')
 // }
 
 const server = hapi.server({
-    port: 8000,
+    port: 9000,
     host: 'localhost'
 });
 // server.route({
@@ -68,6 +62,7 @@ server.route(propertyroutes)
 server.route(paymentroutes)
 //server.route(userroutes)
 server.route(mailroutes)
+server.route(countyroutes)
 
 process.on('unhandledRejection',(err) => {
     console.log(err)
