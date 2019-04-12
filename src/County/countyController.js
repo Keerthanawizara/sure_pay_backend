@@ -24,55 +24,42 @@ const countyDetail = (req,h) => {
 // payment table List Page
 
 const countyDataList = (request,h) => {
+   // const data = request.payload
+    const params = {_id: mongoose.Types.ObjectId(request.payload.id)}
     return new Promise((resolve,reject) => 
-        countyCollection.paginate({},{offset:0, limit:15},(err,docs) => {
+        countyCollection.findById(params,(err,docs) => {
             if (err) {
-           reject(err)
-           //console.log(err)
+          // reject(err)
+           console.log(err)
              }else{
                resolve(docs)
              }
         }))
 }
+
 const countyRecordUpdate = (req,h) => {
-        
     const Data = req.payload;
+    const params = {_id: mongoose.Types.ObjectId(req.params.id)};
     return new Promise((resolve,reject) => {
-        countyCollection.updateOne(
-            {$set:{name:user.name,state:user.state}},{multi:true,new:true},(Data,(err,docs) => {
+        const update_data=({county:req.payload.county, city:req.payload.city, state:req.payload.state, zip:req.payload.zip})
+        countyCollection.updateOne(params,{$set:update_data},{multi:true},(Data,(err,docs) => {
                 if(!err){
-                        resolve({status:true,message:"update success"})
+                        resolve({status:true,message:"update success"})      
                     }else{
-                        resolve({status:false,message:"invalid "})
+                       resolve({status:false,message:"invalid "})
                     }
             })); 
 
     })
  }
- const countyRecord = (req,h) => {
-    const query = req.payload;
-    const params = {_id: mongoose.Types.ObjectId(req.params.id),pin:query.pin};  
-        return new Promise((resolve,reject) => {
-            countyCollection.findOne(
-                params,
-                ((err,docs) => {
-                    if(err){
-                      // console.log(err)
-                       reject(err)
-                    }else{
-                      resolve(docs)
-                    }
-                })); 
 
-        })
-            
-    }
 
+ 
 module.exports = {
     countyDetail,
     countyDataList,
     countyRecordUpdate,
-     countyRecord
+    
 
 
 
