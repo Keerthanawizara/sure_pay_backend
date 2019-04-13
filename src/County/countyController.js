@@ -2,6 +2,7 @@ const countyCollection = require('./countyModel');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+//server side data validation
 
 const schema = Joi.object().keys({
     county:Joi.string(),
@@ -10,24 +11,26 @@ const schema = Joi.object().keys({
     zip: Joi.string()
 })
 
-//create api with joi validation 
+//create county api 
+
 const countyDetail = (req,h) => {
     var data = req.payload
        return new Promise((resolve, reject) => {
            countyCollection.create(req.payload,
            Joi.validate(data, schema, (err,docs)=> {
-               if (err) reject(err);
+               if (err) 
+               console.log(err)
+              // reject(err);
                else resolve(docs);
            }));
        });
 }
-// payment table List Page
+// countyDataList api table List Page
 
 const countyDataList = (request,h) => {
-   // const data = request.payload
-    const params = {_id: mongoose.Types.ObjectId(request.payload.id)}
+   const data = request.payload
     return new Promise((resolve,reject) => 
-        countyCollection.findById(params,(err,docs) => {
+        countyCollection.findOne(data,(err,docs) => {
             if (err) {
           // reject(err)
            console.log(err)
@@ -36,6 +39,8 @@ const countyDataList = (request,h) => {
              }
         }))
 }
+
+//countyRecordupdate api using pin 
 
 const countyRecordUpdate = (req,h) => {
     const Data = req.payload;

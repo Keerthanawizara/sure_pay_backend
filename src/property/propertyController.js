@@ -6,7 +6,7 @@ const Joi = require('joi');
 //server side Data validation initialize
 
 const schema = Joi.object().keys({
-    country: Joi.string(),
+    county: Joi.string(),
     pin: Joi.string(),
     address: Joi.string(),
     city: Joi.string(),

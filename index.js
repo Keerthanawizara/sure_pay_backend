@@ -4,11 +4,10 @@ require('./src/dbConfig').dbconfig();
 const propertyroutes = require('./src/property/propertyRoutes')
 const paymentroutes = require('./src/payment/paymentRoutes')
 const countyroutes = require('./src/County/countyRoutes')
+const assesseeroutes = require('./src/Assessee/assesseeRoutes')
+const mailroutes = require('./src/Email/emailRoutes')
 
 //const AuthBearer = require('hapi-auth-bearer-token');
- const mailroutes = require('./src/Email/emailRoutes')
- //console.log(countyroutes)
-
 //const userAuthentication = require('./src/common/authenticator')
 
 // const uuid = require('uuid/v1')
@@ -43,6 +42,7 @@ server.route(paymentroutes)
 //server.route(userroutes)
 server.route(mailroutes)
 server.route(countyroutes)
+server.route(assesseeroutes )
 
 process.on('unhandledRejection',(err) => {
     console.log(err)

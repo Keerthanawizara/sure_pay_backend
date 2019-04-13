@@ -1,28 +1,27 @@
 var nodemailer = require('nodemailer');
 const emailCollection = require('./emailModel');
-require('dotenv').config();
+//require('dotenv').config();
 
+//Email api
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-         user: process.env.EMAIL,
-         pass: process.env.PASSWORD
+         user:"keerthirajme@gmail.com",
+         pass: "rajendran5"
     }
 });
 
     const  sendEmail = (req,h) => {
        var mailOptions= req.payload
-       var parseData = JSON.parse(mailoptions)
-       //console.log(mailOptions)
+      // var parseData = JSON.parse(mailOptions)
       return new Promise((resolve,reject)=>{
       emailCollection.create(req.payload,
-      transporter.sendMail(mailOptions,parseData,(error, info)=>{
+      transporter.sendMail(mailOptions,(error, info)=>{
         if (error) {
-          //console.log(error);
-          reject(error)
+         reject(error)
+         //console.log(error)
         } else {
-          //console.log('Email sent: ' + info.response);
           resolve(info)
         }
      }))
